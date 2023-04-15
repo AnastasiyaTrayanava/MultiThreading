@@ -74,6 +74,7 @@ namespace MultiThreading.Task4.Threads.Join
             thread.Start(number);
             thread.Join();
 
+            // bug: counting is backwards
             Console.WriteLine(number);
         }
     }
