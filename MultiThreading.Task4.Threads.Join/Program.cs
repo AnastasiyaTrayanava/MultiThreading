@@ -37,6 +37,7 @@ namespace MultiThreading.Task4.Threads.Join
 
             Console.WriteLine("ThreadPool+Semaphore: ");
             ThreadPool.QueueUserWorkItem(CreateThreadPoolRecursively, 10);
+            _semaphore.Wait();
 
             Console.ReadLine();
         }
@@ -48,15 +49,13 @@ namespace MultiThreading.Task4.Threads.Join
                 return;
             }
 
-            _threadPoolCount++;
-
             var number = (int)state;
             number--;
+            Console.WriteLine(number);
             ThreadPool.QueueUserWorkItem(CreateThreadPoolRecursively, number);
+            _threadPoolCount++;
 
             _semaphore.Wait();
-
-            Console.WriteLine(number);
         }
 
         private static void CreateThreadsRecursively(object state)
@@ -71,11 +70,10 @@ namespace MultiThreading.Task4.Threads.Join
 
             var number = (int)state;
             number--;
+            Console.WriteLine(number);
+
             thread.Start(number);
             thread.Join();
-
-            // bug: counting is backwards
-            Console.WriteLine(number);
         }
     }
 }

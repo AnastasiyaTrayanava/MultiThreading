@@ -7,7 +7,6 @@
  */
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace MultiThreading.Task2.Chaining
@@ -24,15 +23,16 @@ namespace MultiThreading.Task2.Chaining
             Console.WriteLine("Fourth Task – calculates the average value. All this tasks should print the values to console");
             Console.WriteLine();
 
+            var rand = new Random();
+
             var numberOne = Task.Run(() =>
             {
-                var rand = new Random();
                 return Enumerable.Repeat(0, 10).Select(x => rand.Next(0, 10)).ToArray();
             });
             PrintArray(numberOne.Result);
             var numberTwo = numberOne.ContinueWith(x =>
             {
-                var randomInteger = new Random().Next(10);
+                var randomInteger = rand.Next(10);
                 return x.Result.Select(a => a * randomInteger).ToArray();
             });
             PrintArray(numberTwo.Result);

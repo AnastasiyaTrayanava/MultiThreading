@@ -20,13 +20,17 @@ namespace MultiThreading.Task5.Threads.SharedCollection
             Console.WriteLine("Use Thread, ThreadPool or Task classes for thread creation and any kind of synchronization constructions.");
             Console.WriteLine();
 
-            _sharedCollection = new List<int>();
+            var task = Task.Run(() =>
+            {
+                _sharedCollection = new List<int>();
+            });
 
             for (var i = 0; i < 10; i++)
             {
-                var numberOne = Task.Run(() => AddElements(i));
+                var counter = i;
+                var numberOne = task.ContinueWith(_ => AddElements(counter));
                 numberOne.Wait();
-                var numberTwo = numberOne.ContinueWith(PrintCollection);
+                var numberTwo = task.ContinueWith(PrintCollection);
                 numberTwo.Wait();
             }
 

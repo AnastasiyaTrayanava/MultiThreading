@@ -23,12 +23,14 @@ namespace MultiThreading.Task3.MatrixMultiplier.Tests
             var secondTimer = RunTimerTest(100);
             var thirdTimer = RunTimerTest(250);
 
-            Assert.IsFalse(firstTimer.Synced.ElapsedTicks > firstTimer.Paralleled.ElapsedTicks);
-            Assert.IsFalse(secondTimer.Synced.ElapsedTicks > secondTimer.Paralleled.ElapsedTicks);
-            Assert.IsTrue(thirdTimer.Synced.ElapsedTicks > thirdTimer.Paralleled.ElapsedTicks);
+            Assert.IsFalse(firstTimer.Synced > firstTimer.Paralleled);
+            Assert.IsFalse(secondTimer.Synced > secondTimer.Paralleled);
+            Assert.IsTrue(thirdTimer.Synced > thirdTimer.Paralleled);
         }
 
-        private (Stopwatch Synced, Stopwatch Paralleled) RunTimerTest(int matrixSize)
+        #region private methods
+
+        private (long Synced, long Paralleled) RunTimerTest(int matrixSize)
         {
             var syncedMatrixMult = new MatricesMultiplier();
             var paralleledMatrixMult = new MatricesMultiplierParallel();
@@ -44,10 +46,8 @@ namespace MultiThreading.Task3.MatrixMultiplier.Tests
             paralleledMatrixMult.Multiply(firstTestMatrix, secondTestMatrix);
             watch2.Stop();
 
-            return (watch1, watch2);
+            return (watch1.ElapsedTicks, watch2.ElapsedTicks);
         }
-
-        #region private methods
 
         void TestMatrix3On3(IMatricesMultiplier matrixMultiplier)
         {
