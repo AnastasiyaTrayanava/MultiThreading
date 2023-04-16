@@ -45,7 +45,7 @@ namespace MultiThreading.Task6.Continuation
                 Console.WriteLine("Executing secondary task.");
             });
 
-            Task.WaitAll();
+            numberTwo.Wait();
         }
 
         static void CriteriaTwo()
@@ -62,7 +62,7 @@ namespace MultiThreading.Task6.Continuation
                 Console.WriteLine("Executing secondary task after parent failure.");
             }, TaskContinuationOptions.OnlyOnFaulted);
 
-            Task.WaitAll();
+            numberTwo.Wait();
         }
 
         static void CriteriaThree()
@@ -79,7 +79,7 @@ namespace MultiThreading.Task6.Continuation
                 Console.WriteLine("Executing secondary task after parent failure and reusing a thread.");
             }, TaskContinuationOptions.OnlyOnFaulted & TaskContinuationOptions.ExecuteSynchronously);
 
-            Task.WaitAll();
+            numberTwo.Wait();
         }
 
         static void CriteriaFour()
@@ -104,7 +104,7 @@ namespace MultiThreading.Task6.Continuation
                 Console.WriteLine("Creating a task outside of thread pool for parent task.");
             }, TaskContinuationOptions.OnlyOnCanceled);
 
-            Task.WaitAll();
+            numberTwo.Wait();
         }
     }
 }
